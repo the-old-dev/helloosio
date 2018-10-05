@@ -34,8 +34,15 @@ public class Greeting {
         return content;
     }
     
+     public void setContent(String content) {
+        this.content = content;
+    }
     
     public String getErrors() {
         return errors;
+    }
+    
+    public void setErrors(String errors) {
+        this.errors = errors;
     }
 }

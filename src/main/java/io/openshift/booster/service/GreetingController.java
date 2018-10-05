@@ -20,14 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.dizitart.no2.Cursor;
 import org.dizitart.no2.Nitrite;
+import org.dizitart.no2.objects.ObjectRepository;
 
 @RestController
 public class GreetingController {
 
     private final GreetingProperties properties;
     private String errors;
-
+    private Nitrite db;
+    private ObjectRepository<Greeting> repository;
+    
     @Autowired
     public GreetingController(GreetingProperties properties) {
         this.properties = properties;
@@ -38,15 +42,35 @@ public class GreetingController {
     @RequestMapping("/api/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
         String message = String.format(properties.getMessage(), name);
-        return new Greeting(message, errors);
+        Greeting greeting = new Greeting(message, errors);
+        
+        try{
+            repository.insert(greeting);
+        } catch (Exception e) {
+            this.errors = errors + e.getMessage();
+        }   
+        
+        return greeting;
+    }
+    
+    @RequestMapping("/api/greetings")
+    public Cursor greetings() {
+        return  repository.find();;
     }
 
     private void initialize() {
         try {
-            Nitrite db = Nitrite.builder()
+            
+            // Initialize DB
+            db = Nitrite.builder()
                 .compressed()
                 .filePath("/test.db")
                 .openOrCreate("user", "password");
+                
+            // Initialize an Object Repository
+            repository = db.getRepository(Greeting.class);
+            
+            
         } catch (Exception e) {
             this.errors = errors + e.getMessage();
         }    
