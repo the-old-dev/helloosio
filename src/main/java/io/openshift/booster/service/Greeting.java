@@ -22,10 +22,12 @@ public class Greeting {
 
     public Greeting() {
         this.content = null;
+        this.errors = null;
     }
 
     public Greeting(String content, String errors) {
         this.content = content;
+        this.errors = errors;
     }
 
     public String getContent() {

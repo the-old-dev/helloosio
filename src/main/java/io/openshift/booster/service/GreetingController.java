@@ -26,11 +26,13 @@ import org.dizitart.no2.Nitrite;
 public class GreetingController {
 
     private final GreetingProperties properties;
-    private String errors ="Errors:\n";
+    private String errors;
 
     @Autowired
     public GreetingController(GreetingProperties properties) {
         this.properties = properties;
+        this.errors ="Errors:\n";
+        initialize();
     }
 
     @RequestMapping("/api/greeting")
@@ -46,8 +48,9 @@ public class GreetingController {
                 .filePath("/test.db")
                 .openOrCreate("user", "password");
         } catch (Exception e) {
-            errors = errors + 
+            this.errors = errors + e.getMessage();
         }    
 
     }
+    
 }
