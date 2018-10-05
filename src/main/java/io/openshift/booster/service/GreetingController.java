@@ -20,10 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.dizitart.no2.Nitrite;
+
 @RestController
 public class GreetingController {
 
     private final GreetingProperties properties;
+    private String errors ="Errors:\n";
 
     @Autowired
     public GreetingController(GreetingProperties properties) {
@@ -33,6 +36,18 @@ public class GreetingController {
     @RequestMapping("/api/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
         String message = String.format(properties.getMessage(), name);
-        return new Greeting(message);
+        return new Greeting(message, errors);
+    }
+
+    private void initialize() {
+        try {
+            Nitrite db = Nitrite.builder()
+                .compressed()
+                .filePath("/test.db")
+                .openOrCreate("user", "password");
+        } catch (Exception e) {
+            errors = errors + 
+        }    
+
     }
 }

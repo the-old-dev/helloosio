@@ -18,16 +18,22 @@ package io.openshift.booster.service;
 public class Greeting {
 
     private final String content;
+    private final String errors;
 
     public Greeting() {
         this.content = null;
     }
 
-    public Greeting(String content) {
+    public Greeting(String content, String errors) {
         this.content = content;
     }
 
     public String getContent() {
         return content;
+    }
+    
+    
+    public String getErrors() {
+        return errors;
     }
 }
