@@ -15,6 +15,9 @@
  */
 package io.openshift.booster.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +35,8 @@ public class GreetingController {
     private Nitrite db;
     private ObjectRepository<Greeting> repository;
     
+     Logger logger = LoggerFactory.getLogger(GreetingController.class);
+    
     @Autowired
     public GreetingController(GreetingProperties properties) {
         this.properties = properties;
@@ -46,8 +51,10 @@ public class GreetingController {
         
         try{
             repository.insert(greeting);
+            logger.info("NitriteDB: Repository insert happend");
         } catch (Exception e) {
-            this.errors = errors + e.getMessage();
+            this.errors = errors + e.toString();
+            logger.error(e.toString());
         }   
         
         return greeting;
@@ -59,20 +66,26 @@ public class GreetingController {
     }
 
     private void initialize() {
+        
+        logger.info("NitriteDB: starting ...");
+        
         try {
             
             // Initialize DB
             db = Nitrite.builder()
                 .compressed()
-                .filePath("/test.db")
+                .filePath("test.db")
                 .openOrCreate("user", "password");
                 
+            logger.info("NitriteDB: started -" + db);
+                   
             // Initialize an Object Repository
             repository = db.getRepository(Greeting.class);
-            
+            logger.info("NitriteDB: Repository created");
             
         } catch (Exception e) {
-            this.errors = errors + e.getMessage();
+            this.errors = errors + e.toString();
+            logger.error(e.toString());
         }    
 
     }
