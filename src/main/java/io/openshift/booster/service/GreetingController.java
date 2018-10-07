@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.dizitart.no2.Cursor;
 import org.dizitart.no2.Nitrite;
+import org.dizitart.no2.objects.Cursor;
 import org.dizitart.no2.objects.ObjectRepository;
 
 @RestController
@@ -54,8 +54,8 @@ public class GreetingController {
     }
     
     @RequestMapping("/api/greetings")
-    public Cursor greetings() {
-        return  repository.find();;
+    public Cursor<Greeting> greetings() {
+        return  repository.find();
     }
 
     private void initialize() {
