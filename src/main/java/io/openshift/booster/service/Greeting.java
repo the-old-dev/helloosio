@@ -18,16 +18,16 @@ package io.openshift.booster.service;
 public class Greeting {
 
     private String content;
-    private String errors;
+    private String info;
 
     public Greeting() {
         this.content = null;
-        this.errors = null;
+        this.info = null;
     }
 
     public Greeting(String content, String errors) {
         this.content = content;
-        this.errors = errors;
+        this.info = errors;
     }
 
     public String getContent() {
@@ -38,11 +38,11 @@ public class Greeting {
         this.content = content;
     }
     
-    public String getErrors() {
-        return errors;
+    public String getInfo() {
+        return info;
     }
     
-    public void setErrors(String errors) {
-        this.errors = errors;
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

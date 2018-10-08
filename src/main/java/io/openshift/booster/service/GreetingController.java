@@ -47,14 +47,16 @@ public class GreetingController {
     @RequestMapping("/api/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
         String message = String.format(properties.getMessage(), name);
-        Greeting greeting = new Greeting(message, errors);
+        Greeting greeting = null;
         
         try{
+            greeting = new Greeting(message, "Time:="+System.currentTimeMillis());
             repository.insert(greeting);
             logger.info("NitriteDB: Repository insert happend");
         } catch (Exception e) {
             this.errors = errors + e.toString();
             logger.error(e.toString());
+            greeting = new Greeting(message, errors);
         }   
         
         return greeting;
